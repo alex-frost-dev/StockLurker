@@ -1,0 +1,1 @@
+INSERT INTO MARKET (id, code, name) VALUES (1, 'LS', 'Lang & Schwarz')
