@@ -1,13 +1,14 @@
-package my.personal.stocklurker.exchange.application.usecase;
+package my.personal.stocklurker.exchange.application.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import my.personal.stocklurker.asset.application.command.SaveAssetCommand;
-import my.personal.stocklurker.asset.application.usecase.FindAssetByIsinUseCase;
-import my.personal.stocklurker.asset.application.usecase.SaveAssetUseCase;
+import my.personal.stocklurker.asset.application.port.in.FindAssetByIsinUseCase;
+import my.personal.stocklurker.asset.application.port.in.SaveAssetUseCase;
 import my.personal.stocklurker.asset.domain.model.Asset;
 import my.personal.stocklurker.common.domain.exception.CustomException;
 import my.personal.stocklurker.exchange.application.command.AddAssetExchangeCommand;
+import my.personal.stocklurker.exchange.application.port.in.SaveAssetExchangeUseCase;
 import my.personal.stocklurker.exchange.domain.model.AssetExchange;
 import my.personal.stocklurker.exchange.domain.model.ExchangeType;
 import my.personal.stocklurker.exchange.domain.port.out.AssetExchangePort;
@@ -21,9 +22,9 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class SaveAssetExchangeUseCase {
+public class SaveAssetExchangeService implements SaveAssetExchangeUseCase {
 
-    private static final Logger logger = LoggerFactory.getLogger(SaveAssetExchangeUseCase.class);
+    private static final Logger logger = LoggerFactory.getLogger(SaveAssetExchangeService.class);
 
     private final FindAssetByIsinUseCase findAssetByIsinUseCase;
     private final SaveAssetUseCase saveAssetUseCase;

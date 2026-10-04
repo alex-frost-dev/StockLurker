@@ -7,7 +7,7 @@ import my.personal.stocklurker.asset.domain.model.AssetPrice;
 import my.personal.stocklurker.asset.domain.model.Currency;
 import my.personal.stocklurker.asset.domain.model.ISIN;
 import my.personal.stocklurker.asset.domain.port.out.AssetPricePort;
-import my.personal.stocklurker.market.application.usecase.FindMarketByCodeUseCase;
+import my.personal.stocklurker.market.application.port.in.FindMarketByCodeUseCase;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -31,6 +31,7 @@ public class LSAssetAdapter implements AssetPricePort {
 
     private final RestClient restClient;
     private final AssetInfoMapper mapper;
+    private final FindMarketByCodeUseCase findMarketByCodeUseCase;
 
     private static final ZoneId LS_ZONE_ID = ZoneId.of("Europe/Berlin");
     private static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
@@ -51,9 +52,9 @@ public class LSAssetAdapter implements AssetPricePort {
     private static final String INSTRUMENT_PATH = "/_rpc/json/.lstc/instrument";
     private static final String SEARCH_PATH = "/search/main";
     private static final String ASSET_PATH = "/en/stock/";
-    private static final String MARKET_CODE = "LS";
+    private static final String LS_MARKET_CODE = "LS";
 
-    private final FindMarketByCodeUseCase findMarketByCodeUseCase;
+
 
     public LSAssetAdapter(@Qualifier("scraperRestClient") RestClient restClient, AssetInfoMapper mapper, FindMarketByCodeUseCase findMarketByCodeUseCase) {
         this.restClient = restClient;
@@ -94,7 +95,7 @@ public class LSAssetAdapter implements AssetPricePort {
 
             return new AssetPrice(
                     mapper.toAsset(assetInfoDto),
-                    findMarketByCodeUseCase.execute(MARKET_CODE),
+                    findMarketByCodeUseCase.execute(LS_MARKET_CODE),
                     instant,
                     bid,
                     ask,

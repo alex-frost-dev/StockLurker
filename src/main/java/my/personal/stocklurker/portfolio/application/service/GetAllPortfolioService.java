@@ -1,10 +1,11 @@
-package my.personal.stocklurker.portfolio.application.dto.usecase;
+package my.personal.stocklurker.portfolio.application.service;
 
 import lombok.RequiredArgsConstructor;
 import my.personal.stocklurker.asset.domain.model.AssetPrice;
 import my.personal.stocklurker.asset.domain.port.out.AssetPricePort;
 import my.personal.stocklurker.exchange.domain.model.AssetExchange;
 import my.personal.stocklurker.exchange.domain.port.out.AssetExchangePort;
+import my.personal.stocklurker.portfolio.application.port.in.GetAllPortfolioUseCase;
 import my.personal.stocklurker.portfolio.domain.model.AssetPortfolio;
 import my.personal.stocklurker.portfolio.domain.model.Portfolio;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class GetAllPortfolioUseCase {
+public class GetAllPortfolioService implements GetAllPortfolioUseCase {
 
     private final AssetExchangePort assetExchangePort;
     private final AssetPricePort assetPricePort;

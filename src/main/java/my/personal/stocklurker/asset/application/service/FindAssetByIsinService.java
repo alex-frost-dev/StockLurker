@@ -1,8 +1,9 @@
-package my.personal.stocklurker.asset.application.usecase;
+package my.personal.stocklurker.asset.application.service;
 
 import lombok.RequiredArgsConstructor;
 import my.personal.stocklurker.asset.domain.model.Asset;
 import my.personal.stocklurker.asset.domain.model.ISIN;
+import my.personal.stocklurker.asset.application.port.in.FindAssetByIsinUseCase;
 import my.personal.stocklurker.asset.domain.port.out.AssetPort;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class FindAssetByIsinUseCase {
+public class FindAssetByIsinService implements FindAssetByIsinUseCase {
 
     private final AssetPort assetPort;
 

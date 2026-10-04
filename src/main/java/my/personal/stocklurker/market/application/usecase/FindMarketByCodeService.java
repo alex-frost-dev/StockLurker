@@ -1,6 +1,7 @@
 package my.personal.stocklurker.market.application.usecase;
 
 import lombok.RequiredArgsConstructor;
+import my.personal.stocklurker.market.application.port.in.FindMarketByCodeUseCase;
 import my.personal.stocklurker.market.domain.model.Market;
 import my.personal.stocklurker.market.domain.port.out.MarketPort;
 import my.personal.stocklurker.common.domain.exception.CustomException;
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class FindMarketByCodeUseCase {
+public class FindMarketByCodeService implements FindMarketByCodeUseCase {
 
     private final MarketPort marketPort;
 

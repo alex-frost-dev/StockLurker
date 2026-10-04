@@ -8,8 +8,8 @@ import my.personal.stocklurker.exchange.application.dto.AssetExchangeDTO;
 import my.personal.stocklurker.exchange.application.dto.assembler.AssetExchangeAssembler;
 import my.personal.stocklurker.exchange.application.dto.request.AddAssetExchangeRequest;
 import my.personal.stocklurker.exchange.application.mapper.AssetExchangeMapper;
-import my.personal.stocklurker.exchange.application.usecase.GetAllAssetExchanges;
-import my.personal.stocklurker.exchange.application.usecase.SaveAssetExchangeUseCase;
+import my.personal.stocklurker.exchange.application.port.in.GetAllAssetExchangesUseCase;
+import my.personal.stocklurker.exchange.application.port.in.SaveAssetExchangeUseCase;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class ExchangeController {
 
     private final SaveAssetExchangeUseCase saveAssetExchangeUseCase;
     private final AssetExchangeAssembler assetExchangeAssembler;
-    private final GetAllAssetExchanges getAllAssetExchanges;
+    private final GetAllAssetExchangesUseCase getAllAssetExchangesUseCase;
     private final AssetExchangeMapper assetExchangeMapper;
 
     @PostMapping
@@ -35,7 +35,7 @@ public class ExchangeController {
 
     @GetMapping
     public ApiResponse<List<AssetExchangeDTO>> getCurrentPortfolio() {
-        return handleResponse(getAllAssetExchanges.execute().stream()
+        return handleResponse(getAllAssetExchangesUseCase.execute().stream()
                 .map(assetExchangeMapper::toDto)
                 .toList());
     }

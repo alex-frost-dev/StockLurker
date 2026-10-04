@@ -1,10 +1,10 @@
 package my.personal.stocklurker.exchange.application.dto.assembler;
 
 import lombok.RequiredArgsConstructor;
+import my.personal.stocklurker.asset.application.mapper.AssetMapper;
 import my.personal.stocklurker.exchange.application.command.AddAssetExchangeCommand;
 import my.personal.stocklurker.exchange.application.dto.request.AddAssetExchangeRequest;
-import my.personal.stocklurker.asset.application.mapper.AssetMapper;
-import my.personal.stocklurker.market.application.usecase.FindMarketByCodeUseCase;
+import my.personal.stocklurker.market.application.port.in.FindMarketByCodeUseCase;
 import org.springframework.stereotype.Component;
 
 @Component
