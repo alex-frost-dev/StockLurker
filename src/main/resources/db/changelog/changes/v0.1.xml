@@ -5,4 +5,21 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
+    <changeSet author="alex-frost-dev" id="asset-exchange-add-taxes-commission-and-fix-price-shares-types">
+        <addColumn schemaName="public" tableName="ASSET_EXCHANGE">
+            <column name="tax" type="DECIMAL(19, 4)"/>
+            <column name="commission" type="DECIMAL(19, 4)"/>
+        </addColumn>
+
+        <modifyDataType schemaName="public"
+                        tableName="ASSET_EXCHANGE"
+                        columnName="shares"
+                        newDataType="DECIMAL(19, 4)"/>
+
+        <modifyDataType schemaName="public"
+                        tableName="ASSET_EXCHANGE"
+                        columnName="price"
+                        newDataType="DECIMAL(19, 4)"/>
+    </changeSet>
+
 </databaseChangeLog>

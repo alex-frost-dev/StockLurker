@@ -9,6 +9,7 @@ import my.personal.stocklurker.asset.infrastructure.persistence.entity.AssetEnti
 import my.personal.stocklurker.market.infrastructure.persistence.entity.MarketEntity;
 import my.personal.stocklurker.exchange.domain.model.ExchangeType;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
@@ -27,10 +28,16 @@ public class AssetExchangeEntity {
     public AssetEntity asset;
 
     @Column
-    public float shares;
+    public BigDecimal shares;
 
     @Column
-    public double price;
+    public BigDecimal price;
+
+    @Column
+    public BigDecimal tax;
+
+    @Column
+    public BigDecimal commission;
 
     @Column
     public Instant timestamp;
