@@ -12,26 +12,26 @@ import java.util.List;
 @NoArgsConstructor
 public class Portfolio {
 
-    public List<AssetPortfolio> assetPortfolios = new ArrayList<>();
+    public List<PortfolioPosition> portfolioPositions = new ArrayList<>();
 
     public void processTransaction(AssetExchange assetExchange) {
-        AssetPortfolio assetPortfolio = this.getPortfolioAsset(assetExchange.asset);
-        if (assetPortfolio == null) {
-            assetPortfolio = addPortfolioAsset(assetExchange);
+        PortfolioPosition portfolioPosition = this.getPortfolioAsset(assetExchange.asset);
+        if (portfolioPosition == null) {
+            portfolioPosition = addPortfolioAsset(assetExchange);
         }
-        assetPortfolio.processTransaction(assetExchange);
+        portfolioPosition.processTransaction(assetExchange);
     }
 
-    public AssetPortfolio addPortfolioAsset(AssetExchange assetExchange) {
-        AssetPortfolio newAssetPortfolio = new AssetPortfolio(assetExchange.asset, 0f, null, assetExchange.market);
-        this.assetPortfolios.add(newAssetPortfolio);
-        return newAssetPortfolio;
+    public PortfolioPosition addPortfolioAsset(AssetExchange assetExchange) {
+        PortfolioPosition newPortfolioPosition = new PortfolioPosition(assetExchange.asset, 0f, null, assetExchange.market);
+        this.portfolioPositions.add(newPortfolioPosition);
+        return newPortfolioPosition;
     }
 
-    private AssetPortfolio getPortfolioAsset(Asset asset) {
-        for (AssetPortfolio assetPortfolio : this.assetPortfolios) {
-            if (assetPortfolio.asset.isin.equals(asset.isin)) {
-                return assetPortfolio;
+    private PortfolioPosition getPortfolioAsset(Asset asset) {
+        for (PortfolioPosition portfolioPosition : this.portfolioPositions) {
+            if (portfolioPosition.asset.isin.equals(asset.isin)) {
+                return portfolioPosition;
             }
         }
         return null;

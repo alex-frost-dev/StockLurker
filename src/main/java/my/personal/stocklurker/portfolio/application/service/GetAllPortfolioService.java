@@ -1,12 +1,12 @@
 package my.personal.stocklurker.portfolio.application.service;
 
 import lombok.RequiredArgsConstructor;
-import my.personal.stocklurker.asset.domain.model.AssetPrice;
-import my.personal.stocklurker.asset.domain.port.out.AssetPricePort;
+import my.personal.stocklurker.market.domain.model.AssetPrice;
+import my.personal.stocklurker.market.domain.port.out.AssetPricePort;
 import my.personal.stocklurker.exchange.domain.model.AssetExchange;
 import my.personal.stocklurker.exchange.domain.port.out.AssetExchangePort;
 import my.personal.stocklurker.portfolio.application.port.in.GetAllPortfolioUseCase;
-import my.personal.stocklurker.portfolio.domain.model.AssetPortfolio;
+import my.personal.stocklurker.portfolio.domain.model.PortfolioPosition;
 import my.personal.stocklurker.portfolio.domain.model.Portfolio;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +27,9 @@ public class GetAllPortfolioService implements GetAllPortfolioUseCase {
             portfolio.processTransaction(assetExchange);
         }
 
-        for (AssetPortfolio assetPortfolio : portfolio.getAssetPortfolios()) {
-            AssetPrice assetPrice = assetPricePort.scrapAssetPrice(assetPortfolio.asset.isin);
-            assetPortfolio.setPrice(assetPrice.bid);
+        for (PortfolioPosition portfolioPosition : portfolio.getPortfolioPositions()) {
+            AssetPrice assetPrice = assetPricePort.scrapAssetPrice(portfolioPosition.asset.isin);
+            portfolioPosition.setPrice(assetPrice.bid);
         }
 
         return portfolio;

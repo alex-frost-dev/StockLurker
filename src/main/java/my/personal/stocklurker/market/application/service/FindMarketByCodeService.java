@@ -1,4 +1,4 @@
-package my.personal.stocklurker.market.application.usecase;
+package my.personal.stocklurker.market.application.service;
 
 import lombok.RequiredArgsConstructor;
 import my.personal.stocklurker.market.application.port.in.FindMarketByCodeUseCase;

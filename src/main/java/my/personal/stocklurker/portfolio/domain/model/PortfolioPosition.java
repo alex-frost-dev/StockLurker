@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class AssetPortfolio {
+public class PortfolioPosition {
 
     public Asset asset;
 

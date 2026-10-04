@@ -3,8 +3,8 @@ package my.personal.stocklurker.asset.application.service;
 import lombok.RequiredArgsConstructor;
 import my.personal.stocklurker.asset.application.port.in.GetAssetUseCase;
 import my.personal.stocklurker.asset.domain.model.ISIN;
-import my.personal.stocklurker.asset.domain.model.AssetPrice;
-import my.personal.stocklurker.asset.domain.port.out.AssetPricePort;
+import my.personal.stocklurker.market.domain.model.AssetPrice;
+import my.personal.stocklurker.market.domain.port.out.AssetPricePort;
 import org.springframework.stereotype.Service;
 
 @Service

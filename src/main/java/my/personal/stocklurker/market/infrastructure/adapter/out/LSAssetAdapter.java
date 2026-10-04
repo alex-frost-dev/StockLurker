@@ -1,12 +1,12 @@
-package my.personal.stocklurker.asset.infrastructure.adapter.out;
+package my.personal.stocklurker.market.infrastructure.adapter.out;
 
 import my.personal.stocklurker.asset.application.dto.AssetInfoDTO;
 import my.personal.stocklurker.asset.application.mapper.AssetInfoMapper;
 import my.personal.stocklurker.asset.domain.exception.AssetException;
-import my.personal.stocklurker.asset.domain.model.AssetPrice;
+import my.personal.stocklurker.market.domain.model.AssetPrice;
 import my.personal.stocklurker.asset.domain.model.Currency;
 import my.personal.stocklurker.asset.domain.model.ISIN;
-import my.personal.stocklurker.asset.domain.port.out.AssetPricePort;
+import my.personal.stocklurker.market.domain.port.out.AssetPricePort;
 import my.personal.stocklurker.market.application.port.in.FindMarketByCodeUseCase;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -77,7 +77,7 @@ public class LSAssetAdapter implements AssetPricePort {
                     .uri(uriRequest)
                     .retrieve()
                     .body(String.class);
-            logger.info("Sent request from scrapAssetPrice: {}", uriRequest);
+            logger.info("Sent request for scrapAssetPrice: {}", uriRequest);
 
             Document doc = Jsoup.parse(htmlResponse);
             String rawBid = doc.select("span[field=bid]").text().trim().replace(",", ".");

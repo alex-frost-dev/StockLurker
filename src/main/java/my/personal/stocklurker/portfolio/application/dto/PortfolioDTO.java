@@ -4,5 +4,5 @@ import java.util.List;
 
 public class PortfolioDTO {
 
-    public List<AssetPortfolioDTO> assetPortfolios;
+    public List<PortfolioPositionDTO> portfolioPositions;
 }

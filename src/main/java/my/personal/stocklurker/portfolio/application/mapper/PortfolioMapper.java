@@ -4,7 +4,7 @@ import my.personal.stocklurker.portfolio.application.dto.PortfolioDTO;
 import my.personal.stocklurker.portfolio.domain.model.Portfolio;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = AssetPortfolioMapper.class)
+@Mapper(componentModel = "spring", uses = PortfolioPositionMapper.class)
 public interface PortfolioMapper {
 
     PortfolioDTO toDto(Portfolio domain);

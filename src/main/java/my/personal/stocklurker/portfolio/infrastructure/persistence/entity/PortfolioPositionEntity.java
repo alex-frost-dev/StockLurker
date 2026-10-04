@@ -9,9 +9,9 @@ import my.personal.stocklurker.asset.infrastructure.persistence.entity.AssetEnti
 import my.personal.stocklurker.market.infrastructure.persistence.entity.MarketEntity;
 
 @Entity
-@Table(name = "ASSET_PORTFOLIO",
+@Table(name = "PORTFOLIO_POSITION",
         uniqueConstraints = { @UniqueConstraint(
-                name = "UK_ASSET_PORTFOLIO_ASSET_ISIN",
+                name = "UK_PORTFOLIO_POSITION_ASSET_ISIN",
                 columnNames = {"ASSET_ISIN"})
         }
 )
@@ -19,7 +19,7 @@ import my.personal.stocklurker.market.infrastructure.persistence.entity.MarketEn
 @NoArgsConstructor
 @Setter
 @Getter
-public class AssetPortfolioEntity {
+public class PortfolioPositionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

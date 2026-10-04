@@ -1,7 +1,8 @@
-package my.personal.stocklurker.asset.domain.model;
+package my.personal.stocklurker.market.domain.model;
 
 import lombok.AllArgsConstructor;
-import my.personal.stocklurker.market.domain.model.Market;
+import my.personal.stocklurker.asset.domain.model.Asset;
+import my.personal.stocklurker.asset.domain.model.Currency;
 
 import java.math.BigDecimal;
 import java.time.Instant;

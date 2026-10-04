@@ -12,8 +12,8 @@ import my.personal.stocklurker.exchange.application.port.in.SaveAssetExchangeUse
 import my.personal.stocklurker.exchange.domain.model.AssetExchange;
 import my.personal.stocklurker.exchange.domain.model.ExchangeType;
 import my.personal.stocklurker.exchange.domain.port.out.AssetExchangePort;
-import my.personal.stocklurker.portfolio.domain.model.AssetPortfolio;
-import my.personal.stocklurker.portfolio.domain.port.out.AssetPortfolioPort;
+import my.personal.stocklurker.portfolio.domain.model.PortfolioPosition;
+import my.personal.stocklurker.portfolio.domain.port.out.PortfolioPositionPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class SaveAssetExchangeService implements SaveAssetExchangeUseCase {
     private final FindAssetByIsinUseCase findAssetByIsinUseCase;
     private final SaveAssetUseCase saveAssetUseCase;
     private final AssetExchangePort assetExchangePort;
-    private final AssetPortfolioPort assetPortfolioPort;
+    private final PortfolioPositionPort portfolioPositionPort;
 
     @Transactional
     public AssetExchange execute(AddAssetExchangeCommand command) {
@@ -51,20 +51,20 @@ public class SaveAssetExchangeService implements SaveAssetExchangeUseCase {
         );
         assetExchange = assetExchangePort.save(assetExchange);
 
-        Optional<AssetPortfolio> assetPortfolioOpt = assetPortfolioPort.findByISIN(assetExchange.asset.isin);
-        AssetPortfolio assetPortfolio;
+        Optional<PortfolioPosition> assetPortfolioOpt = portfolioPositionPort.findByISIN(assetExchange.asset.isin);
+        PortfolioPosition portfolioPosition;
         if (assetPortfolioOpt.isPresent()) {
-            assetPortfolio = assetPortfolioOpt.get();
-            assetPortfolio.processTransaction(assetExchange);
+            portfolioPosition = assetPortfolioOpt.get();
+            portfolioPosition.processTransaction(assetExchange);
         } else {
             if (assetExchange.exchangeType.equals(ExchangeType.BUY)) {
-                assetPortfolio = new AssetPortfolio(assetExchange.asset, assetExchange.shares, null, assetExchange.market);
+                portfolioPosition = new PortfolioPosition(assetExchange.asset, assetExchange.shares, null, assetExchange.market);
             } else {
                 throw new CustomException("The asset with ISIN '{}' can't be sold because it has no shares in the portfolio",
                         assetExchange.asset.isin.value());
             }
         }
-        assetPortfolioPort.save(assetPortfolio);
+        portfolioPositionPort.save(portfolioPosition);
         return assetExchange;
     }
 }
