@@ -13,6 +13,6 @@ public class GetAssetUseCase {
     private final AssetPricePort assetPricePort;
 
     public AssetPrice execute(ISIN isin) {
-        return assetPricePort.scrapPricedAsset(isin);
+        return assetPricePort.scrapAssetPrice(isin);
     }
 }

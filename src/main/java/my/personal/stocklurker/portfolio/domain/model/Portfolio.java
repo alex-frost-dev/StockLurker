@@ -23,7 +23,7 @@ public class Portfolio {
     }
 
     public AssetPortfolio addPortfolioAsset(AssetExchange assetExchange) {
-        AssetPortfolio newAssetPortfolio = new AssetPortfolio(assetExchange.asset, 0f, 0f, assetExchange.market);
+        AssetPortfolio newAssetPortfolio = new AssetPortfolio(assetExchange.asset, 0f, null, assetExchange.market);
         this.assetPortfolios.add(newAssetPortfolio);
         return newAssetPortfolio;
     }

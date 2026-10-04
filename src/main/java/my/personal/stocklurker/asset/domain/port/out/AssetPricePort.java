@@ -4,5 +4,5 @@ import my.personal.stocklurker.asset.domain.model.ISIN;
 import my.personal.stocklurker.asset.domain.model.AssetPrice;
 
 public interface AssetPricePort {
-    AssetPrice scrapPricedAsset(ISIN isin);
+    AssetPrice scrapAssetPrice(ISIN isin);
 }

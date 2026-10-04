@@ -6,7 +6,7 @@ import my.personal.stocklurker.portfolio.domain.model.AssetPortfolio;
 import my.personal.stocklurker.portfolio.domain.port.out.AssetPortfolioPort;
 import my.personal.stocklurker.portfolio.infrastructure.persistence.entity.AssetPortfolioEntity;
 import my.personal.stocklurker.portfolio.infrastructure.persistence.mapper.AssetPortfolioEntityMapper;
-import my.personal.stocklurker.portfolio.infrastructure.repository.AssetPortfolioJpaRepository;
+import my.personal.stocklurker.portfolio.infrastructure.persistence.repository.AssetPortfolioJpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

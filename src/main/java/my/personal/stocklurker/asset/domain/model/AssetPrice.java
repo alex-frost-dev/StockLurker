@@ -1,7 +1,9 @@
 package my.personal.stocklurker.asset.domain.model;
 
 import lombok.AllArgsConstructor;
+import my.personal.stocklurker.market.domain.model.Market;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -13,9 +15,9 @@ public class AssetPrice {
 
     public Instant dateTime;
 
-    public double bid;
+    public BigDecimal bid;
 
-    public double ask;
+    public BigDecimal ask;
 
     public Currency currency;
 }

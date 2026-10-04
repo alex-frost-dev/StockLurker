@@ -2,7 +2,7 @@ package my.personal.stocklurker.exchange.domain.model;
 
 import lombok.AllArgsConstructor;
 import my.personal.stocklurker.asset.domain.model.Asset;
-import my.personal.stocklurker.asset.domain.model.Market;
+import my.personal.stocklurker.market.domain.model.Market;
 
 import java.time.Instant;
 

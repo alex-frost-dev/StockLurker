@@ -1,4 +1,4 @@
-package my.personal.stocklurker.asset.domain.model;
+package my.personal.stocklurker.market.domain.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

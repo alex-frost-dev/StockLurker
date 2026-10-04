@@ -1,6 +1,6 @@
-package my.personal.stocklurker.asset.domain.port.out;
+package my.personal.stocklurker.market.domain.port.out;
 
-import my.personal.stocklurker.asset.domain.model.Market;
+import my.personal.stocklurker.market.domain.model.Market;
 
 import java.util.Optional;
 

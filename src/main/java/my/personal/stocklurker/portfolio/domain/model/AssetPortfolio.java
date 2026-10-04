@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import my.personal.stocklurker.asset.domain.model.Asset;
-import my.personal.stocklurker.asset.domain.model.Market;
+import my.personal.stocklurker.market.domain.model.Market;
 import my.personal.stocklurker.exchange.domain.model.AssetExchange;
 import my.personal.stocklurker.exchange.domain.model.ExchangeType;
+
+import java.math.BigDecimal;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +19,7 @@ public class AssetPortfolio {
     public float shares;
 
     @Setter
-    public double price;
+    public BigDecimal price;
 
     public Market market;
 

@@ -5,7 +5,7 @@ import my.personal.stocklurker.asset.domain.port.out.AssetPort;
 import my.personal.stocklurker.asset.infrastructure.persistence.entity.AssetEntity;
 import my.personal.stocklurker.asset.infrastructure.persistence.mapper.AssetEntityMapper;
 import my.personal.stocklurker.asset.infrastructure.persistence.repository.AssetJpaRepository;
-import my.personal.stocklurker.asset.infrastructure.persistence.repository.MarketJpaRepository;
+import my.personal.stocklurker.market.infrastructure.persistence.repository.MarketJpaRepository;
 import my.personal.stocklurker.common.domain.exception.CustomException;
 import my.personal.stocklurker.exchange.domain.model.AssetExchange;
 import my.personal.stocklurker.exchange.domain.port.out.AssetExchangePort;

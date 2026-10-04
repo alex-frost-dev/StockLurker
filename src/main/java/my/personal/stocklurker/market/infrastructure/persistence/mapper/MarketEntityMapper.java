@@ -1,6 +1,6 @@
-package my.personal.stocklurker.asset.infrastructure.persistence.mapper;
+package my.personal.stocklurker.market.infrastructure.persistence.mapper;
 
-import my.personal.stocklurker.asset.domain.model.Market;
+import my.personal.stocklurker.market.domain.model.Market;
 import my.personal.stocklurker.market.infrastructure.persistence.entity.MarketEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

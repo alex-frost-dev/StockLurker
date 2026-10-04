@@ -57,7 +57,7 @@ public class SaveAssetExchangeUseCase {
             assetPortfolio.processTransaction(assetExchange);
         } else {
             if (assetExchange.exchangeType.equals(ExchangeType.BUY)) {
-                assetPortfolio = new AssetPortfolio(assetExchange.asset, assetExchange.shares, 0f, assetExchange.market);
+                assetPortfolio = new AssetPortfolio(assetExchange.asset, assetExchange.shares, null, assetExchange.market);
             } else {
                 throw new CustomException("The asset with ISIN '{}' can't be sold because it has no shares in the portfolio",
                         assetExchange.asset.isin.value());

@@ -1,4 +1,4 @@
-package my.personal.stocklurker.portfolio.infrastructure.repository;
+package my.personal.stocklurker.portfolio.infrastructure.persistence.repository;
 
 import my.personal.stocklurker.portfolio.infrastructure.persistence.entity.AssetPortfolioEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

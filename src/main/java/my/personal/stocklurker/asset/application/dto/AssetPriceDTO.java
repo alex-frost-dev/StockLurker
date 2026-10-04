@@ -2,6 +2,7 @@ package my.personal.stocklurker.asset.application.dto;
 
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @RequiredArgsConstructor
@@ -13,9 +14,9 @@ public class AssetPriceDTO {
 
     public Instant dateTime;
 
-    public double bid;
+    public BigDecimal bid;
 
-    public double ask;
+    public BigDecimal ask;
 
     public String currency;
 }

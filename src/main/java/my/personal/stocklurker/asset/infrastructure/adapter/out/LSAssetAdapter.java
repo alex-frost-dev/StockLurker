@@ -11,10 +11,13 @@ import my.personal.stocklurker.market.application.usecase.FindMarketByCodeUseCas
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import java.math.BigDecimal;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -23,6 +26,8 @@ import java.util.Optional;
 
 @Component
 public class LSAssetAdapter implements AssetPricePort {
+
+    private static final Logger logger = LoggerFactory.getLogger(LSAssetAdapter.class);
 
     private final RestClient restClient;
     private final AssetInfoMapper mapper;
@@ -57,19 +62,21 @@ public class LSAssetAdapter implements AssetPricePort {
     }
 
     @Override
-    public AssetPrice scrapPricedAsset(ISIN isin) {
+    public AssetPrice scrapAssetPrice(ISIN isin) {
         try {
-            Optional<AssetInfoDTO> optAssetInfoDto = lookupAssetInfo(isin);
+            Optional<AssetInfoDTO> optAssetInfoDto = getLSAssetInfo(isin);
 
             if (optAssetInfoDto.isEmpty()) {
                 throw new AssetException("The request to Lang & Schwarz of ISIN {} returned an invalid result", isin.value());
             }
             AssetInfoDTO assetInfoDto = optAssetInfoDto.get();
+            String uriRequest = ROOT_URL + ASSET_PATH + assetInfoDto.getId();
 
             String htmlResponse = restClient.get()
-                    .uri(ROOT_URL + ASSET_PATH + assetInfoDto.getId())
+                    .uri(uriRequest)
                     .retrieve()
                     .body(String.class);
+            logger.info("Sent request from scrapAssetPrice: {}", uriRequest);
 
             Document doc = Jsoup.parse(htmlResponse);
             String rawBid = doc.select("span[field=bid]").text().trim().replace(",", ".");
@@ -80,8 +87,8 @@ public class LSAssetAdapter implements AssetPricePort {
                     ? bidSpan.parent().ownText().trim()
                     : "€";
 
-            Float bid = Float.parseFloat(rawBid);
-            Float ask = Float.parseFloat(rawAsk);
+            BigDecimal bid = BigDecimal.valueOf(Double.parseDouble(rawBid));
+            BigDecimal ask = BigDecimal.valueOf(Double.parseDouble(rawAsk));
             Instant instant = parseLSTimeToInstant(rawInstant);
             Currency currency = Currency.valueOfSymbol(rawCurrencySymbol);
 
@@ -99,7 +106,7 @@ public class LSAssetAdapter implements AssetPricePort {
         }
     }
 
-    private Optional<AssetInfoDTO> lookupAssetInfo(ISIN isin) {
+    private Optional<AssetInfoDTO> getLSAssetInfo(ISIN isin) {
         AssetInfoDTO[] jsonDto = restClient.get()
                 .uri(ROOT_URL + INSTRUMENT_PATH + SEARCH_PATH, uriBuilder -> {
                     uriBuilder.queryParam("q", isin.value());

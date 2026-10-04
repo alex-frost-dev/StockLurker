@@ -27,7 +27,7 @@ public class GetAllPortfolioUseCase {
         }
 
         for (AssetPortfolio assetPortfolio : portfolio.getAssetPortfolios()) {
-            AssetPrice assetPrice = assetPricePort.scrapPricedAsset(assetPortfolio.asset.isin);
+            AssetPrice assetPrice = assetPricePort.scrapAssetPrice(assetPortfolio.asset.isin);
             assetPortfolio.setPrice(assetPrice.bid);
         }
 

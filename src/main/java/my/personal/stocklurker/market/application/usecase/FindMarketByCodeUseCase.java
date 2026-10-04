@@ -1,8 +1,8 @@
 package my.personal.stocklurker.market.application.usecase;
 
 import lombok.RequiredArgsConstructor;
-import my.personal.stocklurker.asset.domain.model.Market;
-import my.personal.stocklurker.asset.domain.port.out.MarketPort;
+import my.personal.stocklurker.market.domain.model.Market;
+import my.personal.stocklurker.market.domain.port.out.MarketPort;
 import my.personal.stocklurker.common.domain.exception.CustomException;
 import org.springframework.stereotype.Service;
 

@@ -1,11 +1,11 @@
-package my.personal.stocklurker.asset.infrastructure.persistence.adapter;
+package my.personal.stocklurker.market.infrastructure.persistence.adapter;
 
 import lombok.RequiredArgsConstructor;
-import my.personal.stocklurker.asset.domain.model.Market;
-import my.personal.stocklurker.asset.domain.port.out.MarketPort;
+import my.personal.stocklurker.market.domain.model.Market;
+import my.personal.stocklurker.market.domain.port.out.MarketPort;
 import my.personal.stocklurker.market.infrastructure.persistence.entity.MarketEntity;
-import my.personal.stocklurker.asset.infrastructure.persistence.mapper.MarketEntityMapper;
-import my.personal.stocklurker.asset.infrastructure.persistence.repository.MarketJpaRepository;
+import my.personal.stocklurker.market.infrastructure.persistence.mapper.MarketEntityMapper;
+import my.personal.stocklurker.market.infrastructure.persistence.repository.MarketJpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
