@@ -1,0 +1,5 @@
+- Comenzar con Tauri en Angular
+- Pantalla Lista Assets
+- Barra superior para tirar atrás
+- Pantalla Asset (+editar)
+- Pantalla Portfolio (redirección a Pantalla Asset)
