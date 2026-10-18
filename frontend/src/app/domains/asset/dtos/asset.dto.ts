@@ -1,3 +1,4 @@
+
 export interface AssetDTO {
   name: string;
   description?: string;

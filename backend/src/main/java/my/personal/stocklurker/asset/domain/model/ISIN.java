@@ -1,6 +1,7 @@
 package my.personal.stocklurker.asset.domain.model;
 
 import my.personal.stocklurker.asset.domain.exception.AssetException;
+import my.personal.stocklurker.common.domain.exception.ErrorEnum;
 
 import java.util.regex.Pattern;
 
@@ -10,7 +11,7 @@ public record ISIN(String value) {
 
     public ISIN {
         if (value == null || !ISIN_REGEX.matcher(value).matches()) {
-            throw new AssetException("ISIN '{}' is badly formatted and could not be parsed", value);
+            throw new AssetException(ErrorEnum.BAD_ISIN_FORMAT, value);
         }
     }
 

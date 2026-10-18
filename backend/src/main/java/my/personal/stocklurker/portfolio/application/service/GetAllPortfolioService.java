@@ -1,10 +1,10 @@
 package my.personal.stocklurker.portfolio.application.service;
 
 import lombok.RequiredArgsConstructor;
-import my.personal.stocklurker.market.domain.model.AssetPrice;
+import my.personal.stocklurker.asset.infrastructure.adapter.outbound.AssetOnlineInfo;
 import my.personal.stocklurker.market.domain.port.out.AssetPricePort;
-import my.personal.stocklurker.exchange.domain.model.AssetExchange;
-import my.personal.stocklurker.exchange.domain.port.out.AssetExchangePort;
+import my.personal.stocklurker.transaction.domain.model.AssetTransaction;
+import my.personal.stocklurker.transaction.domain.port.out.AssetTransactionPort;
 import my.personal.stocklurker.portfolio.application.port.in.GetAllPortfolioUseCase;
 import my.personal.stocklurker.portfolio.domain.model.PortfolioPosition;
 import my.personal.stocklurker.portfolio.domain.model.Portfolio;
@@ -16,20 +16,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GetAllPortfolioService implements GetAllPortfolioUseCase {
 
-    private final AssetExchangePort assetExchangePort;
+    private final AssetTransactionPort assetTransactionPort;
     private final AssetPricePort assetPricePort;
 
     public Portfolio execute() {
         Portfolio portfolio = new Portfolio();
-        List<AssetExchange> assetExchanges = assetExchangePort.findAll();
+        List<AssetTransaction> assetTransactions = assetTransactionPort.findAll();
 
-        for (AssetExchange assetExchange : assetExchanges) {
-            portfolio.processTransaction(assetExchange);
+        for (AssetTransaction assetTransaction : assetTransactions) {
+            portfolio.processTransaction(assetTransaction);
         }
 
         for (PortfolioPosition portfolioPosition : portfolio.getPortfolioPositions()) {
-            AssetPrice assetPrice = assetPricePort.scrapAssetPrice(portfolioPosition.asset.isin);
-            portfolioPosition.setPrice(assetPrice.bid);
+            AssetOnlineInfo onlineAsset = assetPricePort.scrapAsset(portfolioPosition.asset.isin);
+            portfolioPosition.setPrice(onlineAsset.bid);
         }
 
         return portfolio;

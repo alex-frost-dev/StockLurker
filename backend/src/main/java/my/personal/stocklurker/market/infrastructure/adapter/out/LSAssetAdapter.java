@@ -3,7 +3,9 @@ package my.personal.stocklurker.market.infrastructure.adapter.out;
 import my.personal.stocklurker.asset.application.dto.AssetInfoDTO;
 import my.personal.stocklurker.asset.application.mapper.AssetInfoMapper;
 import my.personal.stocklurker.asset.domain.exception.AssetException;
-import my.personal.stocklurker.market.domain.model.AssetPrice;
+import my.personal.stocklurker.asset.infrastructure.adapter.outbound.AssetOnlineInfo;
+import my.personal.stocklurker.common.application.utils.CurrencyUtils;
+import my.personal.stocklurker.common.domain.exception.ErrorEnum;
 import my.personal.stocklurker.asset.domain.model.Currency;
 import my.personal.stocklurker.asset.domain.model.ISIN;
 import my.personal.stocklurker.market.domain.port.out.AssetPricePort;
@@ -63,12 +65,12 @@ public class LSAssetAdapter implements AssetPricePort {
     }
 
     @Override
-    public AssetPrice scrapAssetPrice(ISIN isin) {
+    public AssetOnlineInfo scrapAsset(ISIN isin) {
         try {
             Optional<AssetInfoDTO> optAssetInfoDto = getLSAssetInfo(isin);
 
             if (optAssetInfoDto.isEmpty()) {
-                throw new AssetException("The request to Lang & Schwarz of ISIN {} returned an invalid result", isin.value());
+                throw new AssetException(ErrorEnum.UNKNOWN_MARKET_RESPONSE, LS_MARKET_CODE, isin.value());
             }
             AssetInfoDTO assetInfoDto = optAssetInfoDto.get();
             String uriRequest = ROOT_URL + ASSET_PATH + assetInfoDto.getId();
@@ -80,20 +82,20 @@ public class LSAssetAdapter implements AssetPricePort {
             logger.info("Sent request for scrapAssetPrice: {}", uriRequest);
 
             Document doc = Jsoup.parse(htmlResponse);
-            String rawBid = doc.select("span[field=bid]").text().trim().replace(",", ".");
-            String rawAsk = doc.select("span[field=ask]").text().trim().replace(",", ".");
+            String rawBid = doc.select("span[field=bid]").text().trim();
+            String rawAsk = doc.select("span[field=ask]").text().trim();
             String rawInstant = doc.select("span[field=midTime]").first().text().trim();
             Element bidSpan = doc.select("span[field=bid]").first();
             String rawCurrencySymbol = (bidSpan != null && bidSpan.parent() != null)
                     ? bidSpan.parent().ownText().trim()
                     : "€";
 
-            BigDecimal bid = BigDecimal.valueOf(Double.parseDouble(rawBid));
-            BigDecimal ask = BigDecimal.valueOf(Double.parseDouble(rawAsk));
+            BigDecimal bid = CurrencyUtils.parsePrice(rawBid);
+            BigDecimal ask = CurrencyUtils.parsePrice(rawAsk);
             Instant instant = parseLSTimeToInstant(rawInstant);
             Currency currency = Currency.valueOfSymbol(rawCurrencySymbol);
 
-            return new AssetPrice(
+            return new AssetOnlineInfo(
                     mapper.toAsset(assetInfoDto),
                     findMarketByCodeUseCase.execute(LS_MARKET_CODE),
                     instant,
@@ -103,7 +105,7 @@ public class LSAssetAdapter implements AssetPricePort {
             );
 
         } catch (NullPointerException ex) {
-            throw new AssetException("The extraction of the asset with ISIN '{}' threw an unexpected error", isin.value());
+            throw new AssetException(ErrorEnum.UNEXPECTED_ASSET_EXTRACTION_ERROR, isin.value());
         }
     }
 
@@ -147,6 +149,6 @@ public class LSAssetAdapter implements AssetPricePort {
                     .toInstant();
         }
 
-        throw new AssetException("Failed to parse date/time string: {}", timeStr);
+        throw new AssetException(ErrorEnum.DATETIME_PARSE_ERROR, timeStr);
     }
 }

@@ -23,16 +23,16 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AssetException.class)
-    public ResponseEntity<ApiResponse<String>> handleAssetException(Exception ex) {
+    public ResponseEntity<ApiResponse<String>> handleAssetException(AssetException ex) {
         logException(ex);
-        return buildErrorResponse(ex.getMessage(), ex, HttpStatus.BAD_REQUEST);
+        return buildErrorResponse(ex.getErrorEnum().name(), ex, HttpStatus.BAD_REQUEST);
     }
 
     private ResponseEntity<ApiResponse<String>> buildErrorResponse(String message, Exception ex, HttpStatus status) {
         ApiResponse<String> response = new ApiResponse<>(
                 false,
                 message,
-                ex.getClass().getSimpleName(),
+                ex.getMessage(),
                 MDC.get("sessionId"),
                 LocalDateTime.now()
         );

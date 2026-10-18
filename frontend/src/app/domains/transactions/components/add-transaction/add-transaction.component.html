@@ -1,0 +1,143 @@
+<div class="flex flex-col h-full space-y-4 max-w-4xl mx-auto w-full">
+
+  <!-- Header Title -->
+  <div class="flex items-center justify-between">
+    <h1 class="text-xl font-semibold text-slate-100 tracking-wide">Register New Transaction</h1>
+  </div>
+
+  <!-- Error Banner -->
+  @if (errorMessage()) {
+    <div class="p-4 bg-red-950/50 border border-red-800 text-red-200 rounded-lg text-sm">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <!-- Success Banner -->
+  @if (successMessage()) {
+    <div class="p-4 bg-emerald-950/50 border border-emerald-800 text-emerald-200 rounded-lg text-sm">
+      {{ successMessage() }}
+    </div>
+  }
+
+  <!-- Form Container -->
+  <div class="flex-1 bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-xl p-6">
+    
+    <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+      <!-- Nested Group: Position -->
+      <div formGroupName="position" class="space-y-6">
+
+        <!-- Asset Details Section -->
+        <div class="border-b border-slate-800 pb-4">
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-4">Asset Information</h2>
+          
+          <div formGroupName="asset" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <!-- ISIN -->
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1">ISIN (12 characters)*</label>
+              <input type="text" formControlName="isin" maxlength="12" placeholder="e.g. US0378331005"
+                     class="w-full bg-slate-950/50 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 font-mono text-sm uppercase">
+            </div>
+
+            <!-- Name -->
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1">Asset Name (auto)</label>
+              <input type="text" formControlName="name" placeholder="..." readonly pointer-events-none select-none tabindex="-1"
+                     class="w-full bg-slate-250/50 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm">
+            </div>
+
+            <!-- Notes -->
+            <div class="md:col-span-2">
+              <label class="block text-xs font-medium text-slate-300 mb-1">Notes (Optional)</label>
+              <input type="text" formControlName="description" placeholder="e.g. Be careful, high volatility..."
+                     class="w-full bg-slate-950/50 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm">
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Transaction Details Section -->
+        <div>
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-4">Transaction Details</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+            <!-- Transaction Type -->
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1">Transaction Type*</label>
+              <select formControlName="transactionType"
+                      class="w-full bg-slate-950/50 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-slate-600 text-sm">
+                <option value="BUY">BUY</option>
+                <option value="SELL">SELL</option>
+              </select>
+            </div>
+
+            <!-- Shares -->
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1">Shares*</label>
+              <input type="number" step="any" formControlName="shares" placeholder="0.00"
+                     class="w-full bg-slate-950/50 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 font-mono text-sm focus:outline-none focus:border-slate-600">
+            </div>
+
+            <!-- Price -->
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1">Price (€)*</label>
+              <input type="number" step="any" formControlName="price" placeholder="0.00"
+                     class="w-full bg-slate-950/50 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 font-mono text-sm focus:outline-none focus:border-slate-600">
+            </div>
+
+            <!-- Market -->
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1">Market*</label>
+              <select formControlName="market"
+                      class="w-full bg-slate-950/50 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-slate-600 text-sm">
+                <option value="" disabled selected>Select a market...</option>
+                @for (market of markets(); track market.code) {
+                  <option [value]="market.code">{{ market.code }} - {{ market.name }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Tax -->
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1">Tax*</label>
+              <input type="number" step="any" formControlName="tax" placeholder="0.00"
+                     class="w-full bg-slate-950/50 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 font-mono text-sm focus:outline-none focus:border-slate-600">
+            </div>
+
+            <!-- Commission -->
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1">Commission*</label>
+              <input type="number" step="any" formControlName="commission" placeholder="0.00"
+                     class="w-full bg-slate-950/50 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 font-mono text-sm focus:outline-none focus:border-slate-600">
+            </div>            
+
+            <!-- Timestamp -->
+            <div class="md:col-span-2">
+              <label class="block text-xs font-medium text-slate-300 mb-1">Timestamp*</label>
+              <input type="datetime-local" formControlName="timestamp"
+                     class="w-full bg-slate-950/50 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-100 font-mono text-sm focus:outline-none focus:border-slate-600">
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Form Actions / Submit Button -->
+      <div class="flex justify-end pt-4 border-t border-slate-800">
+        <button type="submit" [disabled]="isLoading()"
+                class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-lg transition-colors flex items-center space-x-2 disabled:opacity-50">
+          @if (isLoading()) {
+            <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          }
+          <span>Save Transaction</span>
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

@@ -1,8 +1,9 @@
 package my.personal.stocklurker.market.domain.port.out;
 
 import my.personal.stocklurker.asset.domain.model.ISIN;
-import my.personal.stocklurker.market.domain.model.AssetPrice;
+import my.personal.stocklurker.asset.infrastructure.adapter.outbound.AssetOnlineInfo;
 
 public interface AssetPricePort {
-    AssetPrice scrapAssetPrice(ISIN isin);
+
+    AssetOnlineInfo scrapAsset(ISIN isin);
 }

@@ -3,7 +3,7 @@ package my.personal.stocklurker.portfolio.domain.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import my.personal.stocklurker.asset.domain.model.Asset;
-import my.personal.stocklurker.exchange.domain.model.AssetExchange;
+import my.personal.stocklurker.transaction.domain.model.AssetTransaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +14,16 @@ public class Portfolio {
 
     public List<PortfolioPosition> portfolioPositions = new ArrayList<>();
 
-    public void processTransaction(AssetExchange assetExchange) {
-        PortfolioPosition portfolioPosition = this.getPortfolioAsset(assetExchange.asset);
+    public void processTransaction(AssetTransaction assetTransaction) {
+        PortfolioPosition portfolioPosition = this.getPortfolioAsset(assetTransaction.asset);
         if (portfolioPosition == null) {
-            portfolioPosition = addPortfolioAsset(assetExchange);
+            portfolioPosition = addPortfolioAsset(assetTransaction);
         }
-        portfolioPosition.processTransaction(assetExchange);
+        portfolioPosition.processTransaction(assetTransaction);
     }
 
-    public PortfolioPosition addPortfolioAsset(AssetExchange assetExchange) {
-        PortfolioPosition newPortfolioPosition = new PortfolioPosition(assetExchange.asset, 0f, null, assetExchange.market);
+    public PortfolioPosition addPortfolioAsset(AssetTransaction assetTransaction) {
+        PortfolioPosition newPortfolioPosition = new PortfolioPosition(assetTransaction.asset, 0f, null, assetTransaction.market);
         this.portfolioPositions.add(newPortfolioPosition);
         return newPortfolioPosition;
     }

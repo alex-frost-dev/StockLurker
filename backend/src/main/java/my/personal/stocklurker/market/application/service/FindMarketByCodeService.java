@@ -1,6 +1,7 @@
 package my.personal.stocklurker.market.application.service;
 
 import lombok.RequiredArgsConstructor;
+import my.personal.stocklurker.common.domain.exception.ErrorEnum;
 import my.personal.stocklurker.market.application.port.in.FindMarketByCodeUseCase;
 import my.personal.stocklurker.market.domain.model.Market;
 import my.personal.stocklurker.market.domain.port.out.MarketPort;
@@ -20,6 +21,6 @@ public class FindMarketByCodeService implements FindMarketByCodeUseCase {
         if (marketOpt.isPresent()) {
             return marketOpt.get();
         }
-        throw new CustomException("No Market found with code '{}'", code);
+        throw new CustomException(ErrorEnum.UNRECOGNIZED_MARKET, code);
     }
 }

@@ -2,6 +2,7 @@ package my.personal.stocklurker.asset.domain.model;
 
 import lombok.RequiredArgsConstructor;
 import my.personal.stocklurker.asset.domain.exception.AssetException;
+import my.personal.stocklurker.common.domain.exception.ErrorEnum;
 
 @RequiredArgsConstructor
 public enum Currency {
@@ -16,6 +17,6 @@ public enum Currency {
                 return currency;
             }
         }
-        throw new AssetException("The symbol {} does not correlate to any valid symbols", symbol);
+        throw new AssetException(ErrorEnum.UNRECOGNIZED_CURRENCY, symbol);
     }
 }

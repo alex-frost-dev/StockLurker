@@ -9,8 +9,8 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'exchanges',
-    loadChildren: () => import('./domains/exchanges/exchanges.routes').then(m => m.EXCHANGES_ROUTES)
+    path: 'transactions',
+    loadChildren: () => import('./domains/transactions/transactions.routes').then(m => m.TRANSACTIONS_ROUTES)
   },
   {
     path: 'portfolio',

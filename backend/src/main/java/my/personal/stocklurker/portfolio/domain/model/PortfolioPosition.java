@@ -5,8 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import my.personal.stocklurker.asset.domain.model.Asset;
 import my.personal.stocklurker.market.domain.model.Market;
-import my.personal.stocklurker.exchange.domain.model.AssetExchange;
-import my.personal.stocklurker.exchange.domain.model.ExchangeType;
+import my.personal.stocklurker.transaction.domain.model.AssetTransaction;
+import my.personal.stocklurker.transaction.domain.model.TransactionType;
 
 import java.math.BigDecimal;
 
@@ -23,14 +23,14 @@ public class PortfolioPosition {
 
     public Market market;
 
-    public void processTransaction(AssetExchange assetExchange) {
-        switch (assetExchange.exchangeType) {
-            case ExchangeType.BUY: {
-                this.buyShares(assetExchange.shares);
+    public void processTransaction(AssetTransaction assetTransaction) {
+        switch (assetTransaction.transactionType) {
+            case TransactionType.BUY: {
+                this.buyShares(assetTransaction.shares);
                 break;
             }
-            case ExchangeType.SELL: {
-                this.sellShares(assetExchange.shares);
+            case TransactionType.SELL: {
+                this.sellShares(assetTransaction.shares);
                 break;
             }
         }

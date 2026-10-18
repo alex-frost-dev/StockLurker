@@ -4,7 +4,7 @@ import { Observable, map } from 'rxjs';
 import { ApiResponse } from '../../../shared/models/api-response.model';
 import { PortfolioDTO } from '../dtos/portfolio.dto';
 import { PortfolioMapper } from '../mappers/portfolio.mapper';
-import { Portfolio } from '../models/exchange.model';
+import { Portfolio } from '../models/portfolio.model';
 
 @Injectable({
   providedIn: 'root'

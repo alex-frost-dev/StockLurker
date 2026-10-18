@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Portfolio } from '../../models/exchange.model';
 import { PortfolioService } from '../../services/portfolio.service';
+import { Portfolio } from '../../models/portfolio.model';
 
 @Component({
   selector: 'app-portfolio-table',

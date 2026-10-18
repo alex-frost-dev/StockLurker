@@ -8,6 +8,7 @@ import my.personal.stocklurker.market.infrastructure.persistence.mapper.MarketEn
 import my.personal.stocklurker.market.infrastructure.persistence.repository.MarketJpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,6 +17,13 @@ public class MarketJpaAdapter implements MarketPort {
 
     private final MarketJpaRepository marketJpaRepository;
     private final MarketEntityMapper marketEntityMapper;
+
+    @Override
+    public List<Market> findAll() {
+        return marketJpaRepository.findAll().stream()
+                .map(marketEntityMapper::toDomain)
+                .toList();
+    }
 
     @Override
     public Optional<Market> findByCode(String code) {
