@@ -1,0 +1,82 @@
+<div class="flex flex-col h-full space-y-4">
+
+  <!-- Error Banner -->
+  @if (errorMessage()) {
+    <div class="p-4 bg-red-950/50 border border-red-800 text-red-200 rounded-lg text-sm">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <!-- Table Container -->
+  <div class="flex-1 bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex flex-col shadow-xl">
+    <div class="overflow-x-auto flex-1">
+      <table class="w-full text-left border-collapse">
+        
+        <!-- Table Header -->
+        <thead class="bg-slate-950/80 text-xs uppercase tracking-wider text-slate-400 border-b border-slate-800 sticky top-0">
+          <tr>
+            <th class="px-6 py-4 font-semibold">ISIN / Asset</th>
+            <th class="px-6 py-4 font-semibold">Name</th>
+            <th class="px-6 py-4 font-semibold text-center">Type</th>
+            <th class="px-6 py-4 font-semibold text-right">Shares</th>
+            <th class="px-6 py-4 font-semibold text-right">Price</th>
+            <th class="px-6 py-4 font-semibold">Market</th>
+            <th class="px-6 py-4 font-semibold text-right">Timestamp</th>
+          </tr>
+        </thead>
+
+        <!-- Table Body -->
+        <tbody class="divide-y divide-slate-800 text-sm">
+          @if (isLoading()) {
+            <tr>
+              <td colspan="7" class="px-6 py-12 text-center text-slate-400">
+                <div class="flex justify-center items-center space-x-2">
+                  <div class="w-5 h-5 border-2 border-slate-500 border-t-transparent rounded-full animate-spin"></div>
+                  <span>Loading portfolio exchanges...</span>
+                </div>
+              </td>
+            </tr>
+          } @else if (stocks().length === 0) {
+            <tr>
+              <td colspan="7" class="px-6 py-12 text-center text-slate-500">
+                No exchanges available in portfolio.
+              </td>
+            </tr>
+          } @else {
+            @for (position of stocks(); track trackByIsin($index, position)) {
+              <tr class="hover:bg-slate-800/50 transition-colors">
+                <td class="px-6 py-4 font-mono font-bold text-slate-200">{{ position.asset.isin }}</td>
+                <td class="px-6 py-4 text-slate-300">
+                  <div>{{ position.asset.name }}</div>
+                  @if (position.asset.description) {
+                    <div class="text-xs text-slate-500">{{ position.asset.description }}</div>
+                  }
+                </td>
+                <td class="px-6 py-4 text-center">
+                  <span class="px-2 py-1 text-xs font-semibold rounded-md"
+                        [class.bg-emerald-950]="position.exchangeType === 'BUY'"
+                        [class.text-emerald-400]="position.exchangeType === 'BUY'"
+                        [class.bg-rose-950]="position.exchangeType === 'SELL'"
+                        [class.text-rose-400]="position.exchangeType === 'SELL'">
+                    {{ position.exchangeType }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 text-right font-mono text-slate-200">
+                  {{ position.shares | number:'1.0-4' }}
+                </td>
+                <td class="px-6 py-4 text-right font-mono text-slate-200">
+                  {{ position.price | currency:'EUR':'symbol':'1.2-4' }}
+                </td>
+                <td class="px-6 py-4 font-mono text-xs text-slate-400">{{ position.market }}</td>
+                <td class="px-6 py-4 text-right text-xs text-slate-500">
+                  {{ position.timestamp | date:'medium' }}
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
