@@ -3,6 +3,7 @@ package my.personal.stocklurker.portfolio.application.service;
 import lombok.RequiredArgsConstructor;
 import my.personal.stocklurker.asset.infrastructure.adapter.outbound.AssetOnlineInfo;
 import my.personal.stocklurker.market.domain.port.out.AssetPricePort;
+import my.personal.stocklurker.transaction.application.port.in.GetAssetCostSinceAliveUseCase;
 import my.personal.stocklurker.transaction.domain.model.AssetTransaction;
 import my.personal.stocklurker.transaction.domain.port.out.AssetTransactionPort;
 import my.personal.stocklurker.portfolio.application.port.in.GetAllPortfolioUseCase;
@@ -18,6 +19,7 @@ public class GetAllPortfolioService implements GetAllPortfolioUseCase {
 
     private final AssetTransactionPort assetTransactionPort;
     private final AssetPricePort assetPricePort;
+    private final GetAssetCostSinceAliveUseCase getAssetCostSinceAliveUseCase;
 
     public Portfolio execute() {
         Portfolio portfolio = new Portfolio();
@@ -28,8 +30,12 @@ public class GetAllPortfolioService implements GetAllPortfolioUseCase {
         }
 
         for (PortfolioPosition portfolioPosition : portfolio.getPortfolioPositions()) {
+            if (portfolioPosition.hasNoShares()) {
+                continue;
+            }
             AssetOnlineInfo onlineAsset = assetPricePort.scrapAsset(portfolioPosition.asset.isin);
-            portfolioPosition.setPrice(onlineAsset.bid);
+            portfolioPosition.setMarketPrice(onlineAsset.bid);
+            portfolioPosition.setAverageBuyPrice(getAssetCostSinceAliveUseCase.execute(portfolioPosition.asset.isin));
         }
 
         return portfolio;

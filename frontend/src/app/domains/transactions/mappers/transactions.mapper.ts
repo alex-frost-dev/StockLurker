@@ -5,6 +5,7 @@ export class TransactionMapper {
   
   static toDomain(dto: AssetTransactionDTO): TransactionPosition {
     return {
+      id: dto.id,
       asset: {
         name: dto.asset.name,
         isin: dto.asset.isin,
@@ -20,6 +21,7 @@ export class TransactionMapper {
 
   static toDto(position: TransactionPosition): AssetTransactionDTO {
     return {
+      id: position.id,
       asset: {
         name: position.asset.name,
         isin: position.asset.isin,

@@ -1,5 +1,6 @@
-- Comenzar con Tauri en Angular
-- Pantalla Lista Assets
-- Barra superior para tirar atrás
-- Pantalla Asset (+editar)
-- Pantalla Portfolio (redirección a Pantalla Asset)
+- ✅ Comenzar con Tauri en Angular
+- ✅ Pantalla Lista Assets
+- ❓ Barra superior para tirar atrás
+- 🛠️ Pantalla Asset (+editar)
+- 🛠️ Pantalla Portfolio (redirección a Pantalla Asset)
+- Redis for Portfolio screen

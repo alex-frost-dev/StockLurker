@@ -1,11 +1,19 @@
 import { Asset } from "../../asset/model/asset.model";
 
 export interface Portfolio {
-    portfolioPositions: PortfolioPosition[];
+    portfolioPositionSummary: PortfolioPositionSummary[];
 }
 
 export interface PortfolioPosition {
+  id: string;
   asset: Asset;
   shares: number;
-  price: number;
+  marketPrice: number;
+  averageBuyPrice: number;
+}
+
+export interface PortfolioPositionSummary {
+  portfolioPosition: PortfolioPosition;
+  absoluteProfit: number;
+  percentageProfit: number;
 }

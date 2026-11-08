@@ -9,4 +9,8 @@ public interface MarketMapper {
 
     MarketDTO toDto(Market market);
 
+    default String map(Market market) {
+        return market.getCode();
+    }
+
 }

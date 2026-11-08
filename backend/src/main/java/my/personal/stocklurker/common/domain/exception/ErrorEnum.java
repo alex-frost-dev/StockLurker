@@ -13,6 +13,7 @@ public enum ErrorEnum {
 
     NOT_ENOUGH_SHARES_TO_SELL("The asset with ISIN '{}' can't be sold because it has not enough shares in the portfolio"),
 
+    TRANSACTION_NOT_FOUND("Transaction with ID '{}' not found"),
     UNRECOGNIZED_TRANSACTION_TYPE("TransactionType code '{}' does not match with any known"),
     UNRECOGNIZED_CURRENCY("The currency symbol {} does not correlate to any valid symbols"),
     UNRECOGNIZED_MARKET("Market with code '{}' was not found"),

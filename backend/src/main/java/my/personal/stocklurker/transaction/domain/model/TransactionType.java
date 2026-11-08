@@ -14,6 +14,14 @@ public enum TransactionType {
     public final Long id;
     public final String code;
 
+    public boolean isBuy() {
+        return this == BUY;
+    }
+
+    public boolean isSell() {
+        return this == SELL;
+    }
+
     public static TransactionType fromId(Long id) {
         for (TransactionType value : values()) {
             if (Objects.equals(id, value.id)) {

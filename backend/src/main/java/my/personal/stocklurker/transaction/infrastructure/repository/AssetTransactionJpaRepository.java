@@ -4,6 +4,12 @@ import my.personal.stocklurker.transaction.infrastructure.persistence.entity.Ass
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.UUID;
+
 @Repository
-public interface AssetTransactionJpaRepository extends JpaRepository<AssetTransactionEntity, Long> {
+public interface AssetTransactionJpaRepository extends JpaRepository<AssetTransactionEntity, UUID> {
+
+    List<AssetTransactionEntity> findAllByAssetIsin(String isin);
+
 }

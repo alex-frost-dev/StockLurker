@@ -1,0 +1,29 @@
+@keyframes slideDownExact {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUpExact {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+}
+
+.animate-slide-down-center {
+  animation: slideDownExact 0.25s ease-out forwards;
+}
+
+.animate-slide-up-center {
+  animation: slideUpExact 0.2s ease-in forwards;
+}

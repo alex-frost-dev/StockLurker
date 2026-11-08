@@ -10,6 +10,7 @@ export interface TransactionAsset {
 }
 
 export interface TransactionPosition {
+  id: string;
   asset: TransactionAsset;
   shares: number;
   price: number;

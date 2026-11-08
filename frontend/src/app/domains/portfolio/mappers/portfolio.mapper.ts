@@ -1,16 +1,27 @@
 import { AssetMapper } from '../../asset/mappers/asset.mapper';
-import { PortfolioDTO } from '../dtos/portfolio.dto';
-import { Portfolio } from '../models/portfolio.model';
+import { PortfolioPositionSummaryDTO } from '../dtos/portfolio.dto';
+import { Portfolio, PortfolioPositionSummary } from '../models/portfolio.model';
+
 
 export class PortfolioMapper {
   
-  static toDomain(dto: PortfolioDTO): Portfolio {
+  static toPortfolioDomain(dto: PortfolioPositionSummaryDTO): Portfolio {
     return {
-        portfolioPositions: dto.portfolioPositions.map(position => ({
-            asset: AssetMapper.toDomain(position.asset),
-            shares: position.shares,
-            price: position.price
-        })),
+      portfolioPositionSummary: [this.toPortfolioPositionSummaryDomain(dto)]
     }
+  }
+
+  static toPortfolioPositionSummaryDomain(dto: PortfolioPositionSummaryDTO): PortfolioPositionSummary {
+    return {
+      portfolioPosition: {
+        id: dto.portfolioPosition.id,
+        asset: AssetMapper.toDomain(dto.portfolioPosition.asset),
+        shares: dto.portfolioPosition.shares,
+        marketPrice: dto.portfolioPosition.marketPrice,
+        averageBuyPrice: dto.portfolioPosition.averageBuyPrice
+      },
+      absoluteProfit: dto.absoluteProfit,
+      percentageProfit: dto.percentageProfit
+    };
   }
 }

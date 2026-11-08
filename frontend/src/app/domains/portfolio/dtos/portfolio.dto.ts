@@ -5,7 +5,15 @@ export interface PortfolioDTO {
 }
 
 export interface PortfolioPositionDTO {
+  id: string;
   asset: AssetDTO;
   shares: number;
-  price: number;
+  marketPrice: number;
+  averageBuyPrice: number;
+}
+
+export interface PortfolioPositionSummaryDTO {
+  portfolioPosition: PortfolioPositionDTO;
+  absoluteProfit: number;
+  percentageProfit: number;
 }

@@ -8,9 +8,11 @@ import lombok.Setter;
 import my.personal.stocklurker.asset.infrastructure.persistence.entity.AssetEntity;
 import my.personal.stocklurker.market.infrastructure.persistence.entity.MarketEntity;
 import my.personal.stocklurker.transaction.domain.model.TransactionType;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "ASSET_TRANSACTION")
@@ -21,8 +23,10 @@ import java.time.Instant;
 public class AssetTransactionEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long id;
+    @GeneratedValue
+    @UuidGenerator
+    @Column(name = "id", updatable = false, nullable = false, columnDefinition = "UUID")
+    public UUID id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     public AssetEntity asset;

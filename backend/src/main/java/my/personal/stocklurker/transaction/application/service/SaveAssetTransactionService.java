@@ -42,7 +42,7 @@ public class SaveAssetTransactionService implements SaveAssetTransactionUseCase 
         if (assetOpt.isEmpty()) {
             logger.info("The asset with ISIN '{}' does not exist in the DB. Creating one anew...", command.asset().isin.value());
             try {
-                getAssetPriceUseCase.execute(command.asset().isin);
+                getAssetPriceUseCase.execute(command.asset().isin, command.market());
                 asset = saveAssetUseCase.execute(new SaveAssetCommand(command.asset().isin, command.asset().name, command.asset().description));
             } catch (NullPointerException ex1) {
                 logger.error(ErrorEnum.ISIN_NOT_FOUND_IN_MARKET.toString(), command.asset().isin, command.market().getCode());
@@ -54,6 +54,7 @@ public class SaveAssetTransactionService implements SaveAssetTransactionUseCase 
             asset = assetOpt.get();
         }
         AssetTransaction assetTransaction = new AssetTransaction(
+                null,
                 asset,
                 command.shares(),
                 command.price(),
@@ -72,7 +73,13 @@ public class SaveAssetTransactionService implements SaveAssetTransactionUseCase 
             portfolioPosition.processTransaction(assetTransaction);
         } else {
             if (assetTransaction.transactionType.equals(TransactionType.BUY)) {
-                portfolioPosition = new PortfolioPosition(assetTransaction.asset, assetTransaction.shares, null, assetTransaction.market);
+                portfolioPosition = new PortfolioPosition(
+                        null,
+                        assetTransaction.asset,
+                        assetTransaction.shares,
+                        null,
+                        null,
+                        assetTransaction.market);
             } else {
                 throw new CustomException(ErrorEnum.NOT_ENOUGH_SHARES_TO_SELL, assetTransaction.asset.isin.value());
             }

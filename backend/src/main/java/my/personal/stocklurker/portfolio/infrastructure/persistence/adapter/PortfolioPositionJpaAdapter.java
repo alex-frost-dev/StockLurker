@@ -2,6 +2,7 @@ package my.personal.stocklurker.portfolio.infrastructure.persistence.adapter;
 
 import lombok.RequiredArgsConstructor;
 import my.personal.stocklurker.asset.domain.model.ISIN;
+import my.personal.stocklurker.market.domain.model.Market;
 import my.personal.stocklurker.portfolio.domain.model.PortfolioPosition;
 import my.personal.stocklurker.portfolio.domain.port.out.PortfolioPositionPort;
 import my.personal.stocklurker.portfolio.infrastructure.persistence.entity.PortfolioPositionEntity;
@@ -9,6 +10,7 @@ import my.personal.stocklurker.portfolio.infrastructure.persistence.mapper.Portf
 import my.personal.stocklurker.portfolio.infrastructure.persistence.repository.PortfolioPositionJpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +23,13 @@ public class PortfolioPositionJpaAdapter implements PortfolioPositionPort {
     @Override
     public Optional<PortfolioPosition> findByISIN(ISIN isin) {
         return repository.findByAssetIsin(isin.value()).map(mapper::toDomain);
+    }
+
+    @Override
+    public List<PortfolioPosition> findAllWithSharesByMarket(Market market) {
+        return repository.findAllWithSharesByMarket(market.getId()).stream()
+                .map(mapper::toDomain)
+                .toList();
     }
 
     @Override

@@ -5,8 +5,11 @@ import my.personal.stocklurker.asset.application.dto.AssetDTO;
 import my.personal.stocklurker.transaction.domain.model.TransactionType;
 
 import java.time.Instant;
+import java.util.UUID;
 
 public class AssetTransactionDTO {
+
+    public UUID id;
 
     @NotNull
     public AssetDTO asset;

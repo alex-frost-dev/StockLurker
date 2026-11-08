@@ -27,4 +27,8 @@ export class TransactionsService {
   addNewTransaction(transactionDTO: AddAssetTransactionRequest): Observable<ApiResponse<AssetTransactionDTO[]>> {
     return this.http.post<ApiResponse<AssetTransactionDTO[]>>(this.apiUrl, transactionDTO);
   }
+
+  deleteTransaction(transactionId: string): Observable<ApiResponse<string>> {
+    return this.http.delete<ApiResponse<string>>(`${this.apiUrl}/${transactionId}`);
+  }
 }

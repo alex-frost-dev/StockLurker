@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import my.personal.stocklurker.asset.infrastructure.persistence.entity.AssetEntity;
 import my.personal.stocklurker.market.infrastructure.persistence.entity.MarketEntity;
+import org.hibernate.annotations.UuidGenerator;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "PORTFOLIO",
@@ -22,8 +25,10 @@ import my.personal.stocklurker.market.infrastructure.persistence.entity.MarketEn
 public class PortfolioPositionEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long id;
+    @GeneratedValue
+    @UuidGenerator
+    @Column(name = "id", updatable = false, nullable = false, columnDefinition = "UUID")
+    public UUID id;
 
     @ManyToOne
     @JoinColumn(name = "ASSET_ISIN")

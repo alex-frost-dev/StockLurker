@@ -4,12 +4,13 @@ import my.personal.stocklurker.asset.application.dto.AssetInfoDTO;
 import my.personal.stocklurker.asset.application.mapper.AssetInfoMapper;
 import my.personal.stocklurker.asset.domain.exception.AssetException;
 import my.personal.stocklurker.asset.infrastructure.adapter.outbound.AssetOnlineInfo;
-import my.personal.stocklurker.common.application.utils.CurrencyUtils;
+import my.personal.stocklurker.common.domain.utils.CurrencyUtils;
 import my.personal.stocklurker.common.domain.exception.ErrorEnum;
 import my.personal.stocklurker.asset.domain.model.Currency;
 import my.personal.stocklurker.asset.domain.model.ISIN;
+import my.personal.stocklurker.market.domain.model.Market;
 import my.personal.stocklurker.market.domain.port.out.AssetPricePort;
-import my.personal.stocklurker.market.application.port.in.FindMarketByCodeUseCase;
+import my.personal.stocklurker.market.application.port.in.GetMarketByCodeUseCase;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -33,7 +34,9 @@ public class LSAssetAdapter implements AssetPricePort {
 
     private final RestClient restClient;
     private final AssetInfoMapper mapper;
-    private final FindMarketByCodeUseCase findMarketByCodeUseCase;
+    private final GetMarketByCodeUseCase getMarketByCodeUseCase;
+
+    private static final String LS_MARKET_CODE = "LS";
 
     private static final ZoneId LS_ZONE_ID = ZoneId.of("Europe/Berlin");
     private static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
@@ -54,14 +57,16 @@ public class LSAssetAdapter implements AssetPricePort {
     private static final String INSTRUMENT_PATH = "/_rpc/json/.lstc/instrument";
     private static final String SEARCH_PATH = "/search/main";
     private static final String ASSET_PATH = "/en/stock/";
-    private static final String LS_MARKET_CODE = "LS";
 
-
-
-    public LSAssetAdapter(@Qualifier("scraperRestClient") RestClient restClient, AssetInfoMapper mapper, FindMarketByCodeUseCase findMarketByCodeUseCase) {
+    public LSAssetAdapter(@Qualifier("scraperRestClient") RestClient restClient, AssetInfoMapper mapper, GetMarketByCodeUseCase getMarketByCodeUseCase) {
         this.restClient = restClient;
         this.mapper = mapper;
-        this.findMarketByCodeUseCase = findMarketByCodeUseCase;
+        this.getMarketByCodeUseCase = getMarketByCodeUseCase;
+    }
+
+    @Override
+    public boolean supports(Market market) {
+        return market != null && LS_MARKET_CODE.equalsIgnoreCase(market.getCode());
     }
 
     @Override
@@ -97,7 +102,7 @@ public class LSAssetAdapter implements AssetPricePort {
 
             return new AssetOnlineInfo(
                     mapper.toAsset(assetInfoDto),
-                    findMarketByCodeUseCase.execute(LS_MARKET_CODE),
+                    getMarketByCodeUseCase.execute(LS_MARKET_CODE),
                     instant,
                     bid,
                     ask,

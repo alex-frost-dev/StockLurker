@@ -4,20 +4,24 @@ import lombok.AllArgsConstructor;
 import my.personal.stocklurker.asset.domain.model.Asset;
 import my.personal.stocklurker.market.domain.model.Market;
 
+import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 
 @AllArgsConstructor
 public class AssetTransaction {
 
+    public UUID id;
+
     public Asset asset;
 
-    public float shares;
+    public BigDecimal shares;
 
-    public double price;
+    public BigDecimal price;
 
-    public double tax;
+    public BigDecimal tax;
 
-    public double commission;
+    public BigDecimal commission;
 
     public Instant timestamp;
 

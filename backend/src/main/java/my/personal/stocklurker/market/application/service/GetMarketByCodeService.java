@@ -2,7 +2,7 @@ package my.personal.stocklurker.market.application.service;
 
 import lombok.RequiredArgsConstructor;
 import my.personal.stocklurker.common.domain.exception.ErrorEnum;
-import my.personal.stocklurker.market.application.port.in.FindMarketByCodeUseCase;
+import my.personal.stocklurker.market.application.port.in.GetMarketByCodeUseCase;
 import my.personal.stocklurker.market.domain.model.Market;
 import my.personal.stocklurker.market.domain.port.out.MarketPort;
 import my.personal.stocklurker.common.domain.exception.CustomException;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class FindMarketByCodeService implements FindMarketByCodeUseCase {
+public class GetMarketByCodeService implements GetMarketByCodeUseCase {
 
     private final MarketPort marketPort;
 

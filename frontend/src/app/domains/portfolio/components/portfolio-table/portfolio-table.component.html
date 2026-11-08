@@ -1,74 +1,128 @@
-<div class="flex flex-col h-full space-y-4">
+<div class="flex flex-col h-full w-full space-y-4">
+
+  <!-- Header Action Bar con Grid de 3 columnas -->
+  <div class="grid grid-cols-3 items-center w-full min-h-[44px]">
+    
+    <!-- Columna 1: Izquierda (Vacía) -->
+    <div></div>
+
+    <!-- Columna 2: Centro (Flex natural alineado a la misma altura Y, sin absolute) -->
+    <div class="flex justify-center items-center">
+      @if (showCopiedToast()) {
+        <div 
+          [attr.data-key]="toastKey()" 
+          [class]="isLeaving() ? 'animate-slide-up-center' : 'animate-slide-down-center'"
+          class="flex items-center space-x-2 px-4 py-2 bg-slate-900/95 border border-emerald-500/50 text-emerald-200 text-sm font-medium rounded-xl shadow-xl backdrop-blur-md whitespace-nowrap">
+          <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>The text has been copied to the clipboard</span>
+        </div>
+      }
+    </div>
+
+    <!-- Columna 3: Derecha (Botón Refresh) -->
+    <div class="flex justify-end">
+      <button 
+        (click)="loadPortfolio()"
+        [disabled]="isLoading()"
+        class="flex items-center space-x-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-200 text-sm font-medium rounded-lg border border-slate-700 transition-colors disabled:opacity-50 cursor-pointer shadow-md">
+        <svg [class.animate-spin]="isLoading()" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        <span>{{ isLoading() ? 'Refreshing...' : 'Refresh' }}</span>
+      </button>
+    </div>
+  </div>
 
   <!-- Error Banner -->
   @if (errorMessage()) {
-    <div class="p-4 bg-red-950/50 border border-red-800 text-red-200 rounded-lg text-sm">
+    <div class="p-4 bg-red-950/50 border border-red-800 text-red-200 rounded-lg text-sm shrink-0">
       {{ errorMessage() }}
     </div>
   }
 
   <!-- Table Container -->
-  <div class="flex-1 bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex flex-col shadow-xl">
-    <div class="overflow-x-auto flex-1">
+  <div class="flex-1 min-h-0 bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex flex-col shadow-xl">
+    <div class="overflow-y-auto overflow-x-auto flex-1">
       <table class="w-full text-left border-collapse">
         
         <!-- Table Header -->
-        <thead class="bg-slate-950/80 text-xs uppercase tracking-wider text-slate-400 border-b border-slate-800 sticky top-0">
+        <thead class="bg-slate-950/80 text-xs uppercase tracking-wider text-slate-400 border-b border-slate-800 sticky top-0 z-10">
           <tr>
             <th class="px-6 py-4 font-semibold">ISIN / Asset</th>
             <th class="px-6 py-4 font-semibold">Name</th>
             <th class="px-6 py-4 font-semibold text-right">Shares</th>
             <th class="px-6 py-4 font-semibold text-right">Price</th>
+            <th class="px-6 py-4 font-semibold text-right">Average Buy Price</th>
             <th class="px-6 py-4 font-semibold text-right">Total Value</th>
           </tr>
         </thead>
 
         <!-- Table Body -->
         <tbody class="divide-y divide-slate-800 text-sm">
-          @if (isLoading()) {
+          @if (isLoading() && portfolio().portfolioPositionSummary.length === 0) {
             <tr>
-              <td colspan="5" class="px-6 py-12 text-center text-slate-400">
-                <div class="flex justify-center items-center space-x-2">
+              <td colspan="6" class="relative px-6 py-24 text-center text-slate-400">
+                <div class="absolute inset-0 flex justify-center items-center space-x-2 bg-slate-900/50">
                   <div class="w-5 h-5 border-2 border-slate-500 border-t-transparent rounded-full animate-spin"></div>
                   <span>Loading portfolio asset positions...</span>
                 </div>
               </td>
             </tr>
-          } @else if (portfolio().portfolioPositions.length === 0) {
+          } @else if (portfolio().portfolioPositionSummary.length === 0) {
             <tr>
-              <td colspan="5" class="px-6 py-12 text-center text-slate-500">
-                No assets available in portfolio.
+              <td colspan="6" class="relative px-6 py-24 text-center text-slate-500">
+                <div class="absolute inset-0 flex justify-center items-center bg-slate-900/50">
+                  No assets available in portfolio.
+                </div>
               </td>
             </tr>
           } @else {
-            @for (position of portfolio().portfolioPositions; track position.asset.isin) {
-              <tr class="hover:bg-slate-800/50 transition-colors">
+            @for (item of portfolio().portfolioPositionSummary; track item.portfolioPosition.asset.isin) {
+              <!-- Clickable Row -->
+              <tr 
+              [routerLink]="['/asset', item.portfolioPosition.asset.isin]"
+              class="hover:bg-slate-800/50 transition-colors cursor-pointer">
+                
                 <!-- ISIN Column -->
-                <td class="px-6 py-4 font-mono font-bold text-slate-200">
-                  {{ position.asset.isin }}
+                <td class="px-6 py-4 font-mono font-bold text-slate-200"
+                    (click)="$event.stopPropagation(); copyToClipboard(item.portfolioPosition.asset.isin)">
+                    {{ item.portfolioPosition.asset.isin }}
                 </td>
                 
                 <!-- Name & Description Column -->
-                <td class="px-6 py-4 text-slate-300">
-                  <div class="font-medium text-slate-200">{{ position.asset.name }}</div>
-                  @if (position.asset.description) {
-                    <div class="text-xs text-slate-500 mt-0.5">{{ position.asset.description }}</div>
-                  }
+                <td class="px-6 py-4 text-slate-300"
+                  (click)="$event.stopPropagation(); copyToClipboard(item.portfolioPosition.asset.name)">                 
+                    {{ item.portfolioPosition.asset.name }}
                 </td>
                 
                 <!-- Shares Column -->
-                <td class="px-6 py-4 text-right font-mono text-slate-200">
-                  {{ position.shares | number:'1.0-4':'es' }}
+                <td 
+                  class="px-6 py-4 text-right font-mono text-slate-200"
+                  (click)="$event.stopPropagation(); copyToClipboard(formatShares(item.portfolioPosition.shares))">
+                  {{ item.portfolioPosition.shares | number:'1.0-4':'es' }}
                 </td>
                 
-                <!-- Price Column -->
-                <td class="px-6 py-4 text-right font-mono text-slate-200">
-                  {{ position.price | currency:'EUR':'symbol':'1.2-4':'es' }}
+                <!-- Market Price Column -->
+                <td 
+                  class="px-6 py-4 text-right font-mono text-slate-200"
+                  (click)="$event.stopPropagation(); copyToClipboard(formatMoney(item.portfolioPosition.marketPrice, '1.0-4'))">
+                  {{ item.portfolioPosition.marketPrice | currency:'EUR':'symbol':'1.2-4':'es' }}
                 </td>
 
-                <!-- Total Value Column -->
-                <td class="px-6 py-4 text-right font-mono font-semibold text-emerald-400">
-                  {{ (position.shares * position.price) | currency:'EUR':'symbol':'1.2-2':'es' }}
+                <!-- Average Buy Price Column -->
+                <td
+                  class="px-6 py-4 text-right font-mono text-slate-200"
+                  (click)="$event.stopPropagation(); copyToClipboard(formatMoney(item.portfolioPosition.averageBuyPrice, '1.0-4'))">
+                  {{ item.portfolioPosition.averageBuyPrice | currency:'EUR':'symbol':'1.2-4':'es' }}
+                </td>
+
+                <!-- Total Market Value Column -->
+                <td 
+                class="px-6 py-4 text-right font-mono font-semibold text-emerald-400"
+                  (click)="$event.stopPropagation(); copyToClipboard(formatMoney(item.portfolioPosition.shares * item.portfolioPosition.marketPrice, '1.2-2'))">
+                  {{ (item.portfolioPosition.shares * item.portfolioPosition.marketPrice) | currency:'EUR':'symbol':'1.2-2':'es' }}
                 </td>
               </tr>
             }

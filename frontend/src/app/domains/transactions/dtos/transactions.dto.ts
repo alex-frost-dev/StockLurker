@@ -2,6 +2,7 @@ import { AssetDTO } from "../../asset/dtos/asset.dto";
 import { TransactionType } from "../models/transactions.model";
 
 export interface AssetTransactionDTO {
+  id: string;
   asset: AssetDTO;
   shares: number;
   price: number;

@@ -4,27 +4,29 @@ import lombok.RequiredArgsConstructor;
 import my.personal.stocklurker.asset.application.mapper.AssetMapper;
 import my.personal.stocklurker.transaction.application.command.AddAssetTransactionCommand;
 import my.personal.stocklurker.transaction.application.dto.request.AddAssetTransactionRequest;
-import my.personal.stocklurker.market.application.port.in.FindMarketByCodeUseCase;
+import my.personal.stocklurker.market.application.port.in.GetMarketByCodeUseCase;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 
 @Component
 @RequiredArgsConstructor
 public class AssetTransactionAssembler {
 
     private final AssetMapper assetMapper;
-    private final FindMarketByCodeUseCase findMarketByCodeUseCase;
+    private final GetMarketByCodeUseCase getMarketByCodeUseCase;
 
     public AddAssetTransactionCommand toAddAssetPositionCommand(AddAssetTransactionRequest request) {
 
 
         return new AddAssetTransactionCommand(
                 assetMapper.toDomain(request.position.asset),
-                request.position.shares,
-                request.position.price,
-                request.position.tax,
-                request.position.commission,
+                BigDecimal.valueOf(request.position.shares),
+                BigDecimal.valueOf(request.position.price),
+                BigDecimal.valueOf(request.position.tax),
+                BigDecimal.valueOf(request.position.commission),
                 request.position.timestamp,
-                findMarketByCodeUseCase.execute(request.position.market),
+                getMarketByCodeUseCase.execute(request.position.market),
                 request.position.transactionType
         );
     }

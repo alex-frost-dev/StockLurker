@@ -1,5 +1,29 @@
 <div class="flex flex-col h-full space-y-4">
 
+  <!-- Header Action Bar (Add a la izquierda, Refresh a la derecha) -->
+  <div class="flex justify-between items-center">
+    
+    <!-- Botón Add new Transaction (Izquierda) -->
+    <a routerLink="/transactions/add-transaction" 
+       class="flex items-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 rounded-xl text-sm font-medium text-slate-200 transition-colors shadow-lg">
+      <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+      </svg>
+      <span>New transaction</span>
+    </a>
+
+    <!-- Botón Refresh (Derecha) -->
+    <button 
+      (click)="loadTransactions()"
+      [disabled]="isLoading()"
+      class="flex items-center space-x-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-200 text-sm font-medium rounded-lg border border-slate-700 transition-colors disabled:opacity-50 cursor-pointer shadow-md">
+      <svg [class.animate-spin]="isLoading()" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+      <span>{{ isLoading() ? 'Refreshing...' : 'Refresh' }}</span>
+    </button>
+  </div>
+
   <!-- Error Banner -->
   @if (errorMessage()) {
     <div class="p-4 bg-red-950/50 border border-red-800 text-red-200 rounded-lg text-sm">
@@ -22,6 +46,7 @@
             <th class="px-6 py-4 font-semibold text-right">Price</th>
             <th class="px-6 py-4 font-semibold">Market</th>
             <th class="px-6 py-4 font-semibold text-right">Timestamp</th>
+            <th class="px-6 py-4 font-semibold text-center w-24">Actions</th>
           </tr>
         </thead>
 
@@ -29,7 +54,7 @@
         <tbody class="divide-y divide-slate-800 text-sm">
           @if (isLoading()) {
             <tr>
-              <td colspan="7" class="px-6 py-12 text-center text-slate-400">
+              <td colspan="8" class="px-6 py-12 text-center text-slate-400">
                 <div class="flex justify-center items-center space-x-2">
                   <div class="w-5 h-5 border-2 border-slate-500 border-t-transparent rounded-full animate-spin"></div>
                   <span>Loading portfolio transactions...</span>
@@ -38,13 +63,13 @@
             </tr>
           } @else if (transactions().length === 0) {
             <tr>
-              <td colspan="7" class="px-6 py-12 text-center text-slate-500">
+              <td colspan="8" class="px-6 py-12 text-center text-slate-500">
                 No transactions available in portfolio.
               </td>
             </tr>
           } @else {
             @for (position of transactions(); track trackByIsin($index, position)) {
-              <tr class="hover:bg-slate-800/50 transition-colors">
+              <tr class="relative group hover:bg-slate-800/50 transition-colors">
                 <td class="px-6 py-4 font-mono font-bold text-slate-200">{{ position.asset.isin }}</td>
                 <td class="px-6 py-4 text-slate-300">
                   <div>{{ position.asset.name }}</div>
@@ -70,6 +95,31 @@
                 <td class="px-6 py-4 font-mono text-xs text-slate-400">{{ position.market }}</td>
                 <td class="px-6 py-4 text-right text-xs text-slate-500">
                   {{ position.timestamp | date:'medium' }}
+                </td>
+
+                <!-- Actions Column (Aparece únicamente al hacer hover en la fila) -->
+                <td class="px-6 py-4 text-center">
+                  <div class="flex items-center justify-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <!-- Edit Button -->
+                    <button 
+                      (click)="onEdit(position, $event)" 
+                      class="p-1.5 text-slate-400 hover:text-blue-400 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors shadow-sm"
+                      title="Edit transaction">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </button>
+
+                    <!-- Delete Button -->
+                    <button 
+                      (click)="onDelete(position, $event)" 
+                      class="p-1.5 text-slate-400 hover:text-red-400 bg-slate-800 hover:bg-red-950/80 rounded-lg transition-colors shadow-sm"
+                      title="Delete transaction">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
                 </td>
               </tr>
             }

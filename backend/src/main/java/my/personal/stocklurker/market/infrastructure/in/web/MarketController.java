@@ -10,12 +10,11 @@ import my.personal.stocklurker.common.infrastructure.http.ApiResponse;
 import my.personal.stocklurker.market.application.dto.MarketDTO;
 import my.personal.stocklurker.market.application.mapper.MarketMapper;
 import my.personal.stocklurker.market.application.port.in.FindAllMarketsUseCase;
+import my.personal.stocklurker.market.application.port.in.GetMarketByCodeUseCase;
+import my.personal.stocklurker.market.domain.model.Market;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,6 +29,7 @@ public class MarketController {
 
     private final GetAssetPriceUseCase getAssetPriceUseCase;
     private final FindAllMarketsUseCase findAllMarketsUseCase;
+    private final GetMarketByCodeUseCase getMarketByCodeUseCase;
     private final AssetPriceMapper assetPriceMapper;
     private final MarketMapper marketMapper;
 
@@ -41,9 +41,10 @@ public class MarketController {
      }
 
     @GetMapping(Routes.ASSET_ROOT + Routes.ID_PATH + Routes.PRICE_NOW_PATH)
-    public ApiResponse<AssetPriceDTO> getAssetPrice(@PathVariable("id") String isin) {
+    public ApiResponse<AssetPriceDTO> getAssetPrice(@PathVariable("id") String isin, @RequestParam("marketCode") String marketCode) {
 
         logger.info("called getAssetPrice() for asset with ISIN '{}'", isin);
-        return handleResponse(assetPriceMapper.toDto(getAssetPriceUseCase.execute(new ISIN(isin))));
+        Market market = getMarketByCodeUseCase.execute(marketCode);
+        return handleResponse(assetPriceMapper.toDto(getAssetPriceUseCase.execute(new ISIN(isin), market)));
     }
 }

@@ -1,4 +1,4 @@
-package my.personal.stocklurker.common.application.utils;
+package my.personal.stocklurker.common.domain.utils;
 
 import java.math.BigDecimal;
 
